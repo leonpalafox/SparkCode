@@ -20,6 +20,6 @@ pairings = lines.map(countCoOccurences)
 totalFriendsByCharacter = pairings.reduceByKey(lambda x,y: x+y)
 flipped = totalFriendsByCharacter.map(lambda (x,y):(y,x))
 
-mostPopular = flipped.max()
+mostPopular = flipped.min()
 mostPopularName = namesRdd.lookup(mostPopular[1])[0]
-print mostPopularName
+print mostPopularName + ' is the most popular super hero, with '+ str(mostPopular[0]) + ' co-appearances'
