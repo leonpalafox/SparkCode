@@ -1,2 +1,2 @@
 # SparkCode
-This is a howto start coding in spark
+This is a howto to start coding in spark
