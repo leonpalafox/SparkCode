@@ -77,20 +77,40 @@ def bfsReduce(data1, data2):
     #preserve darkest color
     if (color1 == 'WHITE' and (color2 == 'GRAY' or color2 == 'BLACK')):
         color = color2
-    if (color2 == 'GRAY' and color2 == 'BLACK'):
+
+    if (color1 == 'GRAY' and color2 == 'BLACK'):
         color = color2
+
+    if (color2 == 'WHITE' and (color1 == 'GRAY' or color1 == 'BLACK')):
+        color = color1
+
+    if (color2 == 'GRAY' and color1 == 'BLACK'):
+        color = color1
         
     return (edges, distance, color)
     
 iterationRdd = createStartingRDD()
-for iteration in range(0,10):
+for iteration in range(0,1):
     print 'Running BFS iteration# '+str(iteration+1)
     mapped = iterationRdd.flatMap(bfsMap) #creates new vertices
     #map.count() forces the RDD to be evaluated and is the only reason our accumulator is actually updated
     print 'Procesing' + str(mapped.count())+ ' values.'
+    if (hitCounter.value > 0):
+        print "Hit the target character! From " + str(hitCounter.value) + " different dirrections(s)."
+        break
+    iterationRdd = mapped.reduceByKey(bfsReduce)
 
 results = mapped.collect()
+for res in results:
+    print res
 
+print '-------------------------------------------------------------------------------------------------------------------------'
+print '------------------------This is the reducer-----------------------------------------'
+print '-------------------------------------------------------------------------------------------------------------------------'
+
+results = iterationRdd.collect()
+for res in results:
+    print res
         
 
         
